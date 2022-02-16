@@ -157,8 +157,14 @@ export class InAppBrowserObject {
    * @param {string | InAppBrowserOptions} [options] Options for the InAppBrowser. Optional, defaulting to: location=yes.
    *                 The options string must not contain any blank space, and each feature's
    *                 name/value pairs must be separated by a comma. Feature names are case insensitive.
+   * @param  extraHeaders {Record<string,string>} Optional object of additional header key/value pairs to send along with request.
    */
-  constructor(url: string, target?: string, options?: string | InAppBrowserOptions) {
+  constructor(
+    url: string,
+    target?: string,
+    options?: string | InAppBrowserOptions,
+    extraHeaders?: Record<string, string>
+  ) {
     try {
       if (options && typeof options !== 'string') {
         options = Object.keys(options)
@@ -166,7 +172,7 @@ export class InAppBrowserObject {
           .join(',');
       }
 
-      this._objectInstance = cordova.InAppBrowser.open(url, target, options);
+      this._objectInstance = cordova.InAppBrowser.open(url, target, options, extraHeaders);
     } catch (e) {
       if (typeof window !== 'undefined') {
         window.open(url, target);
@@ -309,9 +315,15 @@ export class InAppBrowser extends AwesomeCordovaNativePlugin {
    * @param  options {string} Options for the InAppBrowser. Optional, defaulting to: location=yes.
    *                 The options string must not contain any blank space, and each feature's
    *                 name/value pairs must be separated by a comma. Feature names are case insensitive.
+   * @param  extraHeaders {Record<string,string>} Optional object of additional header key/value pairs to send along with request.
    * @returns {InAppBrowserObject}
    */
-  create(url: string, target?: string, options?: string | InAppBrowserOptions): InAppBrowserObject {
-    return new InAppBrowserObject(url, target, options);
+  create(
+    url: string,
+    target?: string,
+    options?: string | InAppBrowserOptions,
+    extraHeaders?: Record<string, string>
+  ): InAppBrowserObject {
+    return new InAppBrowserObject(url, target, options, extraHeaders);
   }
 }
