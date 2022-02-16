@@ -1,5 +1,24 @@
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) ![](https://img.shields.io/npm/v/@awesome-cordova-plugins/core.svg)
 
+# Fork for custom patches
+
+**This fork is created to make local / not publishable patches to specific plugins. There is a manual proces involved into getting the result into the consuming projects**
+
+Publishing has been disabled by commenting out the step in the `scripts/tasks/publish.ts` script.
+To generate a patched version:
+
+- make the patch in the required package (for example: `src/@awesome-cordova-plugins/plugins/in-app-browser`)
+- run `npm run shipit` , this will perform a build, and generates the package.json's for each plugin (and would normaly publish to npm, but that is disabled in this fork)
+- navigate to the dist artifact of the specific plugin, for example: `dist/@awesome-cordova-plugins/plugins/in-app-browser`
+- create an artifact of that specific plugin that needs to be copied into the consuming project:
+
+```bash
+tar -czvf awesome-cordova-plugins-$(basename `pwd`)-patched.tar.gz .
+```
+
+- copy the created archive to the consuming project (for example in a subdir of the project: `custom_libraries`)
+- npm install the library using file reference, for example: `npm install ./custom_libraries/awesome-cordova-plugins-in-app-browser-patched.tar.gz`
+
 # Awesome Cordova Plugins
 
 Awesome Cordova Plugins is a curated set of wrappers for Cordova plugins that make adding any native functionality you need to your [Ionic](https://ionicframework.com/) mobile app easy.
